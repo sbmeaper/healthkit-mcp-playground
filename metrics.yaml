@@ -1,0 +1,552 @@
+version: 1
+
+# Logical table name that your query layer / DuckDB view will use
+table: healthkit_records
+
+# Column in your Parquet that holds the numeric string value
+value_field: value
+
+defaults:
+  cast: double
+  aggregation: avg
+  time_grain: day
+
+metrics:
+  heart_rate:
+    hk_type: HKQuantityTypeIdentifierHeartRate
+    unit: count/min
+    cast: double
+    default_agg: avg
+    description: "Instant heart rate in beats per minute."
+
+  resting_heart_rate:
+    hk_type: HKQuantityTypeIdentifierRestingHeartRate
+    unit: count/min
+    cast: double
+    default_agg: avg
+    description: "Resting heart rate in beats per minute, usually measured at rest."
+
+  walking_heart_rate_average:
+    hk_type: HKQuantityTypeIdentifierWalkingHeartRateAverage
+    unit: count/min
+    cast: double
+    default_agg: avg
+    description: "Average heart rate while walking."
+
+  heart_rate_variability_sdnn:
+    hk_type: HKQuantityTypeIdentifierHeartRateVariabilitySDNN
+    unit: ms
+    cast: double
+    default_agg: avg
+    description: "Heart rate variability using SDNN in milliseconds."
+
+  heart_rate_recovery_1min:
+    hk_type: HKQuantityTypeIdentifierHeartRateRecoveryOneMinute
+    unit: count/min
+    cast: double
+    default_agg: avg
+    description: "Heart rate measured one minute after exercise ends."
+
+  respiratory_rate:
+    hk_type: HKQuantityTypeIdentifierRespiratoryRate
+    unit: count/min
+    cast: double
+    default_agg: avg
+    description: "Number of breaths per minute."
+
+  atrial_fibrillation_burden:
+    hk_type: HKQuantityTypeIdentifierAtrialFibrillationBurden
+    unit: "%"
+    cast: double
+    default_agg: avg
+    description: "Percentage of time in atrial fibrillation over a period."
+
+  oxygen_saturation:
+    hk_type: HKQuantityTypeIdentifierOxygenSaturation
+    unit: "%"
+    cast: double
+    default_agg: avg
+    description: "Blood oxygen saturation percentage."
+
+  active_energy_burned:
+    hk_type: HKQuantityTypeIdentifierActiveEnergyBurned
+    unit: Cal
+    cast: double
+    default_agg: sum
+    description: "Active energy burned (kcal) from movement and exercise."
+
+  basal_energy_burned:
+    hk_type: HKQuantityTypeIdentifierBasalEnergyBurned
+    unit: Cal
+    cast: double
+    default_agg: sum
+    description: "Basal resting energy burned (kcal)."
+
+  step_count:
+    hk_type: HKQuantityTypeIdentifierStepCount
+    unit: count
+    cast: double
+    default_agg: sum
+    description: "Number of steps."
+
+  distance_walking_running:
+    hk_type: HKQuantityTypeIdentifierDistanceWalkingRunning
+    unit: mi
+    cast: double
+    default_agg: sum
+    description: "Distance walked or run in miles."
+
+  distance_cycling:
+    hk_type: HKQuantityTypeIdentifierDistanceCycling
+    unit: mi
+    cast: double
+    default_agg: sum
+    description: "Cycling distance in miles."
+
+  distance_downhill_snow_sports:
+    hk_type: HKQuantityTypeIdentifierDistanceDownhillSnowSports
+    unit: mi
+    cast: double
+    default_agg: sum
+    description: "Distance skied or snowboarded downhill in miles."
+
+  flights_climbed:
+    hk_type: HKQuantityTypeIdentifierFlightsClimbed
+    unit: count
+    cast: double
+    default_agg: sum
+    description: "Number of flights of stairs climbed."
+
+  exercise_minutes:
+    hk_type: HKQuantityTypeIdentifierAppleExerciseTime
+    unit: min
+    cast: double
+    default_agg: sum
+    description: "Exercise minutes as tracked by Apple’s exercise ring."
+
+  stand_minutes:
+    hk_type: HKQuantityTypeIdentifierAppleStandTime
+    unit: min
+    cast: double
+    default_agg: sum
+    description: "Minutes spent standing (Apple stand ring)."
+
+  stand_hour_events:
+    hk_type: HKCategoryTypeIdentifierAppleStandHour
+    unit: null
+    cast: double
+    default_agg: count
+    description: "Count of hours in which the stand goal was met."
+
+  time_in_daylight:
+    hk_type: HKQuantityTypeIdentifierTimeInDaylight
+    unit: min
+    cast: double
+    default_agg: sum
+    description: "Minutes spent in daylight."
+
+  walking_speed:
+    hk_type: HKQuantityTypeIdentifierWalkingSpeed
+    unit: mi/hr
+    cast: double
+    default_agg: avg
+    description: "Average walking speed in miles per hour."
+
+  walking_step_length:
+    hk_type: HKQuantityTypeIdentifierWalkingStepLength
+    unit: in
+    cast: double
+    default_agg: avg
+    description: "Average walking step length in inches."
+
+  walking_double_support_percentage:
+    hk_type: HKQuantityTypeIdentifierWalkingDoubleSupportPercentage
+    unit: "%"
+    cast: double
+    default_agg: avg
+    description: "Percentage of the walking cycle spent with both feet on the ground."
+
+  walking_asymmetry_percentage:
+    hk_type: HKQuantityTypeIdentifierWalkingAsymmetryPercentage
+    unit: "%"
+    cast: double
+    default_agg: avg
+    description: "Percentage of steps in which one foot moves at a different speed than the other."
+
+  walking_steadiness:
+    hk_type: HKQuantityTypeIdentifierAppleWalkingSteadiness
+    unit: "%"
+    cast: double
+    default_agg: avg
+    description: "Walking steadiness score as a percentage."
+
+  stair_ascent_speed:
+    hk_type: HKQuantityTypeIdentifierStairAscentSpeed
+    unit: ft/s
+    cast: double
+    default_agg: avg
+    description: "Average ascent speed on stairs in feet per second."
+
+  stair_descent_speed:
+    hk_type: HKQuantityTypeIdentifierStairDescentSpeed
+    unit: ft/s
+    cast: double
+    default_agg: avg
+    description: "Average descent speed on stairs in feet per second."
+
+  physical_effort:
+    hk_type: HKQuantityTypeIdentifierPhysicalEffort
+    unit: kcal/hr·kg
+    cast: double
+    default_agg: avg
+    description: "Estimated intensity of physical effort normalized by body weight."
+
+  environmental_audio_exposure:
+    hk_type: HKQuantityTypeIdentifierEnvironmentalAudioExposure
+    unit: dBASPL
+    cast: double
+    default_agg: avg
+    description: "Environmental sound level exposure in decibels."
+
+  headphone_audio_exposure:
+    hk_type: HKQuantityTypeIdentifierHeadphoneAudioExposure
+    unit: dBASPL
+    cast: double
+    default_agg: avg
+    description: "Headphone audio level exposure in decibels."
+
+  environmental_sound_reduction:
+    hk_type: HKQuantityTypeIdentifierEnvironmentalSoundReduction
+    unit: dBASPL
+    cast: double
+    default_agg: avg
+    description: "Reduction in environmental sound level."
+
+  audio_exposure_events:
+    hk_type: HKCategoryTypeIdentifierAudioExposureEvent
+    unit: null
+    cast: double
+    default_agg: count
+    description: "Count of audio exposure events exceeding threshold."
+
+  high_heart_rate_events:
+    hk_type: HKCategoryTypeIdentifierHighHeartRateEvent
+    unit: null
+    cast: double
+    default_agg: count
+    description: "Count of high heart rate notifications."
+
+  sleep_analysis_events:
+    hk_type: HKCategoryTypeIdentifierSleepAnalysis
+    unit: null
+    cast: double
+    default_agg: count
+    description: "Count of sleep analysis category events."
+
+  sleeping_wrist_temperature:
+    hk_type: HKQuantityTypeIdentifierAppleSleepingWristTemperature
+    unit: degF
+    cast: double
+    default_agg: avg
+    description: "Wrist temperature during sleep in degrees Fahrenheit."
+
+  sleeping_breathing_disturbances:
+    hk_type: HKQuantityTypeIdentifierAppleSleepingBreathingDisturbances
+    unit: count
+    cast: double
+    default_agg: sum
+    description: "Count of breathing disturbance events during sleep."
+
+  six_minute_walk_distance:
+    hk_type: HKQuantityTypeIdentifierSixMinuteWalkTestDistance
+    unit: m
+    cast: double
+    default_agg: avg
+    description: "Distance walked in the six-minute walk test in meters."
+
+  mindful_sessions:
+    hk_type: HKCategoryTypeIdentifierMindfulSession
+    unit: null
+    cast: double
+    default_agg: count
+    description: "Count of mindful sessions recorded."
+
+  body_mass:
+    hk_type: HKQuantityTypeIdentifierBodyMass
+    unit: lb
+    cast: double
+    default_agg: avg
+    description: "Body weight in pounds."
+
+  bmi:
+    hk_type: HKQuantityTypeIdentifierBodyMassIndex
+    unit: count
+    cast: double
+    default_agg: avg
+    description: "Body mass index (kg/m²), dimensionless."
+
+  body_fat_percentage:
+    hk_type: HKQuantityTypeIdentifierBodyFatPercentage
+    unit: "%"
+    cast: double
+    default_agg: avg
+    description: "Body fat percentage."
+
+  lean_body_mass:
+    hk_type: HKQuantityTypeIdentifierLeanBodyMass
+    unit: lb
+    cast: double
+    default_agg: avg
+    description: "Lean body mass in pounds."
+
+  height:
+    hk_type: HKQuantityTypeIdentifierHeight
+    unit: ft
+    cast: double
+    default_agg: avg
+    description: "Height in feet."
+
+  dietary_energy:
+    hk_type: HKQuantityTypeIdentifierDietaryEnergyConsumed
+    unit: Cal
+    cast: double
+    default_agg: sum
+    description: "Dietary energy consumed in kilocalories."
+
+  dietary_carbohydrates:
+    hk_type: HKQuantityTypeIdentifierDietaryCarbohydrates
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Total carbohydrates consumed in grams."
+
+  dietary_sugar:
+    hk_type: HKQuantityTypeIdentifierDietarySugar
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Sugar consumed in grams."
+
+  dietary_sodium:
+    hk_type: HKQuantityTypeIdentifierDietarySodium
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Sodium intake in milligrams."
+
+  dietary_potassium:
+    hk_type: HKQuantityTypeIdentifierDietaryPotassium
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Potassium intake in milligrams."
+
+  dietary_protein:
+    hk_type: HKQuantityTypeIdentifierDietaryProtein
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Protein intake in grams."
+
+  dietary_fiber:
+    hk_type: HKQuantityTypeIdentifierDietaryFiber
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Dietary fiber intake in grams."
+
+  dietary_fat_total:
+    hk_type: HKQuantityTypeIdentifierDietaryFatTotal
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Total fat intake in grams."
+
+  dietary_fat_saturated:
+    hk_type: HKQuantityTypeIdentifierDietaryFatSaturated
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Saturated fat intake in grams."
+
+  dietary_fat_polyunsaturated:
+    hk_type: HKQuantityTypeIdentifierDietaryFatPolyunsaturated
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Polyunsaturated fat intake in grams."
+
+  dietary_fat_monounsaturated:
+    hk_type: HKQuantityTypeIdentifierDietaryFatMonounsaturated
+    unit: g
+    cast: double
+    default_agg: sum
+    description: "Monounsaturated fat intake in grams."
+
+  dietary_cholesterol:
+    hk_type: HKQuantityTypeIdentifierDietaryCholesterol
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Cholesterol intake in milligrams."
+
+  dietary_calcium:
+    hk_type: HKQuantityTypeIdentifierDietaryCalcium
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Calcium intake in milligrams."
+
+  dietary_water:
+    hk_type: HKQuantityTypeIdentifierDietaryWater
+    unit: mL
+    cast: double
+    default_agg: sum
+    description: "Water intake in milliliters."
+
+  dietary_riboflavin:
+    hk_type: HKQuantityTypeIdentifierDietaryRiboflavin
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Riboflavin (vitamin B2) intake in milligrams."
+
+  dietary_copper:
+    hk_type: HKQuantityTypeIdentifierDietaryCopper
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Copper intake in milligrams."
+
+  dietary_folate:
+    hk_type: HKQuantityTypeIdentifierDietaryFolate
+    unit: mcg
+    cast: double
+    default_agg: sum
+    description: "Folate intake in micrograms."
+
+  dietary_thiamin:
+    hk_type: HKQuantityTypeIdentifierDietaryThiamin
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Thiamin (vitamin B1) intake in milligrams."
+
+  dietary_iron:
+    hk_type: HKQuantityTypeIdentifierDietaryIron
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Iron intake in milligrams."
+
+  dietary_magnesium:
+    hk_type: HKQuantityTypeIdentifierDietaryMagnesium
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Magnesium intake in milligrams."
+
+  dietary_zinc:
+    hk_type: HKQuantityTypeIdentifierDietaryZinc
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Zinc intake in milligrams."
+
+  dietary_phosphorus:
+    hk_type: HKQuantityTypeIdentifierDietaryPhosphorus
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Phosphorus intake in milligrams."
+
+  dietary_vitamin_b6:
+    hk_type: HKQuantityTypeIdentifierDietaryVitaminB6
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Vitamin B6 intake in milligrams."
+
+  dietary_niacin:
+    hk_type: HKQuantityTypeIdentifierDietaryNiacin
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Niacin (vitamin B3) intake in milligrams."
+
+  dietary_selenium:
+    hk_type: HKQuantityTypeIdentifierDietarySelenium
+    unit: mcg
+    cast: double
+    default_agg: sum
+    description: "Selenium intake in micrograms."
+
+  dietary_vitamin_a:
+    hk_type: HKQuantityTypeIdentifierDietaryVitaminA
+    unit: mcg
+    cast: double
+    default_agg: sum
+    description: "Vitamin A intake in micrograms."
+
+  dietary_vitamin_k:
+    hk_type: HKQuantityTypeIdentifierDietaryVitaminK
+    unit: mcg
+    cast: double
+    default_agg: sum
+    description: "Vitamin K intake in micrograms."
+
+  dietary_vitamin_c:
+    hk_type: HKQuantityTypeIdentifierDietaryVitaminC
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Vitamin C intake in milligrams."
+
+  dietary_vitamin_e:
+    hk_type: HKQuantityTypeIdentifierDietaryVitaminE
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Vitamin E intake in milligrams."
+
+  dietary_manganese:
+    hk_type: HKQuantityTypeIdentifierDietaryManganese
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Manganese intake in milligrams."
+
+  dietary_pantothenic_acid:
+    hk_type: HKQuantityTypeIdentifierDietaryPantothenicAcid
+    unit: mg
+    cast: double
+    default_agg: sum
+    description: "Pantothenic acid (vitamin B5) intake in milligrams."
+
+  number_of_alcoholic_beverages:
+    hk_type: HKQuantityTypeIdentifierNumberOfAlcoholicBeverages
+    unit: count
+    cast: double
+    default_agg: sum
+    description: "Number of alcoholic beverages consumed."
+
+  dietary_vitamin_b12:
+    hk_type: HKQuantityTypeIdentifierDietaryVitaminB12
+    unit: mcg
+    cast: double
+    default_agg: sum
+    description: "Vitamin B12 intake in micrograms."
+
+  dietary_vitamin_d:
+    hk_type: HKQuantityTypeIdentifierDietaryVitaminD
+    unit: mcg
+    cast: double
+    default_agg: sum
+    description: "Vitamin D intake in micrograms."
+
+  sleep_duration_goal_hours:
+    hk_type: HKDataTypeSleepDurationGoal
+    unit: hr
+    cast: double
+    default_agg: avg
+    description: "Sleep duration goal in hours."

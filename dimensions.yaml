@@ -1,0 +1,61 @@
+version: 1
+
+dimensions:
+  time:
+    description: "Time-related fields derived from HealthKit start/end timestamps."
+    fields:
+      start_timestamp:
+        expr: "strptime(substr(startDate, 1, 19), '%Y-%m-%d %H:%M:%S')"
+        description: "Start timestamp of the measurement or event (local time, TZ offset stripped)."
+      end_timestamp:
+        expr: "strptime(substr(endDate, 1, 19), '%Y-%m-%d %H:%M:%S')"
+        description: "End timestamp of the measurement or event (local time, TZ offset stripped)."
+      creation_timestamp:
+        expr: "strptime(substr(creationDate, 1, 19), '%Y-%m-%d %H:%M:%S')"
+        description: "When the record was written to HealthKit (local time, TZ offset stripped)."
+      date:
+        expr: "CAST(strptime(substr(startDate, 1, 19), '%Y-%m-%d %H:%M:%S') AS DATE)"
+        description: "Calendar date of the record based on startDate."
+      year:
+        expr: "EXTRACT(year FROM strptime(substr(startDate, 1, 19), '%Y-%m-%d %H:%M:%S'))"
+        description: "Calendar year of the record."
+      month:
+        expr: "DATE_TRUNC('month', strptime(substr(startDate, 1, 19), '%Y-%m-%d %H:%M:%S'))"
+        description: "First day of the month for the record (month bucket)."
+      week:
+        expr: "DATE_TRUNC('week', strptime(substr(startDate, 1, 19), '%Y-%m-%d %H:%M:%S'))"
+        description: "Start of the ISO week for the record."
+      hour_of_day:
+        expr: "EXTRACT(hour FROM strptime(substr(startDate, 1, 19), '%Y-%m-%d %H:%M:%S'))"
+        description: "Hour of day (0–23) at the start of the record."
+
+  device:
+    description: "Information about the device that produced the record (if present)."
+    fields:
+      device_raw:
+        expr: "device"
+        description: "Raw HealthKit device string (e.g., Apple Watch, iPhone)."
+
+  source:
+    description: "App or logical source providing the data to HealthKit."
+    fields:
+      source_name:
+        expr: "sourceName"
+        description: "Name of the app or device that provided the data."
+      source_version:
+        expr: "sourceVersion"
+        description: "Version of the app or source."
+
+  metric_type:
+    description: "The HealthKit type identifier for the record."
+    fields:
+      hk_type:
+        expr: "type"
+        description: "HealthKit type identifier (e.g., HKQuantityTypeIdentifierHeartRate)."
+
+  unit:
+    description: "The measurement unit associated with the value."
+    fields:
+      unit:
+        expr: "unit"
+        description: "Unit string from HealthKit (e.g., count/min, Cal, mi, %)."

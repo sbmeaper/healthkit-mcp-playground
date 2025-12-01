@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual envs
+.venv/
+venv/
+
+# IDE
+.idea/
+
+# Data
+data/raw/
+data/processed/
+*.parquet
+*.duckdb

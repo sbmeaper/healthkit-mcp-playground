@@ -1,3 +1,4 @@
+```mermaid
 graph TD
   User[User] --> ChatUI[Chat UI]
   ChatUI --> LLM[LLM (OpenAI)]

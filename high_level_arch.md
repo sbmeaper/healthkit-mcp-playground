@@ -1,20 +1,11 @@
 graph TD
-    %% Entities / Components
-    UserChatUI[User / Chat UI<br/>(chat_app.py)] 
-    LLM["LLM (OpenAI)"] 
-    QuestionParser["Health-query parser<br/>(health_query.py)"] 
-    MCP_Server["MCP Server<br/>(mcp_server/)"] 
-    DataStore["HealthKit Data<br/>Parquet / DuckDB"] 
-    Converter["HK to Parquet converter<br/>(hk_to_parquet.py)"] 
+  User[User] --> ChatUI[Chat UI]
+  ChatUI --> LLM[LLM (OpenAI)]
+  LLM --> MCP[MCP Server (HealthKit)]
+  MCP --> Data[HealthKit Data Store<br/>(Parquet / DuckDB)]
+  Data --> MCP
+  MCP --> LLM
+  LLM --> ChatUI
 
-    %% Data flow / interactions
-    UserChatUI -->|“Ask natural-language”| LLM
-    LLM -->|“Recognizes health-data query”| QuestionParser
-    QuestionParser -->|“Translate query → structured request”| MCP_Server
-    MCP_Server --> DataStore
-    MCP_Server -->|“Send back results”| LLM
-    LLM --> UserChatUI
-
-    %% Data ingestion path
-    HEALTHXML["HealthKit export.xml"] --> Converter
-    Converter --> DataStore
+  HKXML[HealthKit export.xml] --> Converter[HK → Parquet Converter]
+  Converter --> Data

@@ -1,11 +1,11 @@
 graph TD
-  User[User] --> ChatUI[Chat UI]
-  ChatUI --> LLM[LLM OpenAI]
-  LLM --> MCP[MCP Server - HealthKit]
-  MCP --> Data[HealthKit Data Store]
-  Data --> MCP
-  MCP --> LLM
-  LLM --> ChatUI
+    A[User] --> B[Chat UI]
+    B --> C[LLM]
+    C --> D[MCP Server - HealthKit]
+    D --> E[Health Data Store]
+    E --> D
+    D --> C
+    C --> B
 
-  HKXML[HealthKit export.xml] --> Converter[HK to Parquet Converter]
-  Converter --> Data
+    F[HealthKit export.xml] --> G[HK to Parquet Converter]
+    G --> E

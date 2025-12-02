@@ -3,6 +3,10 @@ from typing import Dict, Any, TypedDict, Literal  # <- add TypedDict, Literal
 
 import yaml
 import duckdb
+import datetime
+import pandas as pd
+
+
 
 
 PROJECT_ROOT = Path(__file__).parent
@@ -155,10 +159,28 @@ def run_spec(spec: HealthQuerySpec, verbose: bool = True) -> Dict[str, Any]:
         print(df.head(20))
 
     # JSON-friendly payload for MCP / callers
+    rows = _json_safe_rows(df.to_dict(orient="records"))
     return {
         "sql": sql,
-        "rows": df.to_dict(orient="records"),
+        "rows": rows,
     }
+
+def _json_safe_rows(rows):
+    """
+    Convert any pandas Timestamp / datetime objects in result rows
+    into plain ISO8601 strings so they can be JSON-serialized.
+    """
+    def convert(value):
+        if isinstance(value, (pd.Timestamp, datetime.datetime, datetime.date)):
+            return value.isoformat()
+        if isinstance(value, dict):
+            return {k: convert(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [convert(v) for v in value]
+        return value
+
+    return [convert(row) for row in rows]
+
 
 def handle_healthkit_query(args: Dict[str, Any]) -> Dict[str, Any]:
     """
